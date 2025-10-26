@@ -1,0 +1,25 @@
+# Build files
+*.exe
+*.obj
+*.o
+*.pdb
+build/
+bin/
+Debug/
+Release/
+
+# IDE files
+.vscode/
+.vs/
+.idea/
+*.user
+*.suo
+
+# Backup files
+*.bak
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
