@@ -468,9 +468,11 @@ void ShowFindClientScreen()
         ShowMessage("Cleint Is Found.", MessageType::Info);
         PrintClientCard(Client);
     }
-    else
+    else 
+    {
         ShowMessage("Cleint Is not Found.", MessageType::Warning);
         cout << "\nClient with Account Number[" << AccountNumber << "] is not found!";
+    }
 }
 
 /**
