@@ -1,42 +1,46 @@
-                                    # 🏦 Bank Project (C++)
+# 🏦 Bank Project (C++) — Version 1.1
 
-A simple console-based **Bank Client Management System** built in **C++**.
-It allows users to manage client records (add, update, delete, find, list) stored in a text file (`Clients.txt`).
+A modern, modular **Bank Client Management System** built in **C++**, using multiple source files for better organization and scalability.
+It allows users to manage client accounts: add, update, delete, find, and perform transactions (deposit & withdraw), all stored locally in a text file.
 
 ---
 
 ## 📋 Features
 
-* 📂 Store client data (Account Number, PIN Code, Name, Phone, Balance)
+* 📂 Manage client records (Account Number, PIN, Name, Phone, Balance)
 * ➕ Add new clients
-* ✏️ Update existing client information
+* ✏️ Update client information
 * ❌ Delete clients
 * 🔍 Find a client by account number
-* 📃 List all clients in a formatted table
-* 💾 Data persistence using a local text file (`Clients.txt`)
+* 💰 Deposit & withdraw funds
+* 💾 Persistent storage using `Clients.txt`
 
 ---
 
 ## 🧱 Project Structure
 
 ```
-📁 ProjectFolder
- ├── Solution.h          # Main implementation file (logic and UI)
- ├── Clients.txt         # Data file containing all client records
- └── main.cpp            # Entry point (includes Solution.h)
+📁 BankProject
+ ├── main.cpp             # Entry point of the program
+ ├── Utils.h / Utils.cpp  # Helper functions (colors, validation, etc.)
+ ├── Client.h / Client.cpp # Client data management
+ ├── Transactions.h / Transactions.cpp # Deposit, withdraw, and balance logic
+ ├── Menu.h / Menu.cpp    # User interface and main menu logic
+ ├── Clients.txt          # Local data file storing client info
+ └── README.md            # Project documentation
 ```
 
 ---
 
 ## ⚙️ How It Works
 
-* The program uses **struct `sClient`** to represent client data.
-* All operations (add, delete, update, etc.) manipulate the `Clients.txt` file.
-* Each line in the file is formatted as:
+* Each client is represented by a **`struct sClient`**.
+* Data is stored line by line in `Clients.txt`:
 
   ```
   AccountNumber#//#PinCode#//#Name#//#Phone#//#Balance
   ```
+* All features interact with this file for reading, writing, and updating records.
 
 Example:
 
@@ -47,183 +51,154 @@ A102#//#4321#//#Mary Johnson#//#555-9876#//#3200.75
 
 ---
 
-## ▶️ How to Run (updated)
+## ▶️ How to Run (Updated for v1.1)
 
-This project is provided **ready-to-run**. You will receive all necessary files; place them together in the project folder and run the program.
+The project is ready to run — simply clone or copy the repository files.
 
-1. **Clone the repository** (or copy the provided files) to your machine:
+1. **Clone the repository**:
 
+   ```bash
+   git clone https://github.com/abdulrhmanalbrashi/BankProject.git
+   cd BankProject
    ```
-   git clone <repo-url>
-   cd <repo-folder>
-   ```
 
-2. **Ensure these files are present** in the project root (you will provide them):
+2. **Ensure the following files are present**:
 
-   * `Solution.h`
    * `main.cpp`
+   * `Utils.h / Utils.cpp`
+   * `Client.h / Client.cpp`
+   * `Transactions.h / Transactions.cpp`
+   * `Menu.h / Menu.cpp`
    * `Clients.txt`
 
-3. **Compile and run**. Example using `g++` from the terminal:
+3. **Compile & Run**:
 
+   ```bash
+   g++ -o bank_app main.cpp Utils.cpp Client.cpp Transactions.cpp Menu.cpp
+   ./bank_app
    ```
-   g++ -o client_app main.cpp
-   ./client_app
-   ```
 
-   *If `main.cpp` includes `Solution.h` and the files are in the same folder, the above command will compile and run the console application.*
-
-4. **Using an IDE (optional)**: If you prefer Visual Studio, Code::Blocks or VS Code, simply open the project folder (or create a new Console Application project) and add the provided files. Then build and run from the IDE.
-
----
-
-## 🧩 Example Interface
-
-```
-===========================================
-        Main Menue Screen
-===========================================
-    [1] Show Client List.
-    [2] Add New Client.
-    [3] Delete Client.
-    [4] Update Client Info.
-    [5] Find Client.
-    [6] Exit.
-===========================================
-Choose what do you want to do? [1 to 6]?
-```
+4. **Or using an IDE**:
+   Open the folder in Visual Studio, Code::Blocks, or VS Code → build → run.
 
 ---
 
 ## 🧠 Concepts Used
 
-* File Handling in C++
-* Structs and Vectors
-* Functions and Enums
-* String Manipulation
-* Console Input/Output Formatting (`iomanip`)
+* File handling in C++
+* Structs & Vectors
+* Functions & Enums
+* String manipulation
+* Modular design (header/source separation)
+* Console UI (colors, icons, sounds)
 
 ---
 
-## 💡 Future Improvements
+## 💡 Future Plans (v1.2 and beyond)
 
-* Password-protected admin access
-* JSON or database storage instead of text files
-* GUI using Qt or wxWidgets
-* Sorting and searching features
+* 🔐 Password-protected admin access
+* 🗄️ Switch to JSON or SQLite database
+* 💻 GUI interface using Qt or wxWidgets
+* 📊 Client statistics and sorting
 
 ---
 
 ## 👨‍💻 Author
 
 **Abdulrahman Al-Barashi**
-📧 Contact: [--]
-🌐 GitHub: [https://github.com/abdulrhmanalbrashi]
+📧 Email: [--]
+🌐 GitHub: [[https://github.com/abdulrhmanalbrashi](https://github.com/abdulrhmanalbrashi)]
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** – free to use, modify, and distribute.
+This project is licensed under the **MIT License** — free to use, modify, and distribute.
 
-------------------------------------------------Translation---------------------------------------------------
-                                                             # 🏦 نظام  البنك (C++)
+---------------------------------------------------Translation---------------------------------------------------
 
-مشروع بسيط يعتمد على **واجهة سطر الأوامر (Console)** مكتوب بلغة **++C**،
-يهدف إلى إدارة بيانات العملاء مثل إضافة عميل جديد، تحديث البيانات، حذف عميل، والبحث عن عميل من خلال رقم الحساب.
+# 🏦 نظام البنك (C++) — الإصدار 1.1
+
+مشروع متكامل لإدارة حسابات العملاء مكتوب بلغة **++C**،
+يعتمد على تقسيم الكود إلى عدة ملفات لسهولة التطوير والصيانة.
+يسمح النظام بإضافة العملاء وتحديث بياناتهم وحذفهم وتنفيذ عمليات الإيداع والسحب.
 
 ---
 
 ## 📋 مميزات النظام
 
-* 📂 حفظ بيانات العملاء (رقم الحساب، الرقم السري، الاسم، الهاتف، الرصيد)
+* 📂 إدارة بيانات العملاء (رقم الحساب – الرقم السري – الاسم – الهاتف – الرصيد)
 * ➕ إضافة عملاء جدد
-* ✏️ تعديل بيانات العملاء الحاليين
-* ❌ حذف عميل من النظام
-* 🔍 البحث عن عميل باستخدام رقم الحساب
-* 📃 عرض جميع العملاء في جدول منسق
-* 💾 تخزين البيانات في ملف نصي (`Clients.txt`)
+* ✏️ تعديل بيانات العملاء
+* ❌ حذف عميل
+* 🔍 البحث عن عميل برقم الحساب
+* 💰 تنفيذ عمليات الإيداع والسحب
+* 💾 حفظ البيانات في ملف نصي محلي (`Clients.txt`)
 
 ---
 
 ## 🧱 هيكل المشروع
 
 ```
-📁 مجلد المشروع
- ├── Solution.h          # يحتوي على الكود الأساسي والمنطق البرمجي
- ├── Clients.txt         # ملف البيانات الذي تُخزن فيه معلومات العملاء
- └── main.cpp            # نقطة الدخول إلى البرنامج (يستدعي Solution.h)
+📁 BankProject
+ ├── main.cpp             # نقطة التشغيل الأساسية
+ ├── Utils.h / Utils.cpp  # دوال مساعدة (ألوان، تحقق من الإدخال، إلخ)
+ ├── Client.h / Client.cpp # إدارة بيانات العملاء
+ ├── Transactions.h / Transactions.cpp # منطق الإيداع والسحب
+ ├── Menu.h / Menu.cpp    # واجهة المستخدم والقائمة الرئيسية
+ ├── Clients.txt          # ملف البيانات المحلي
+ └── README.md            # توثيق المشروع
 ```
 
 ---
 
-## ⚙️ طريقة عمل النظام
+## ▶️ طريقة التشغيل (للإصدار 1.1)
 
-* يستخدم النظام بنية **struct sClient** لتمثيل بيانات العميل.
-* جميع العمليات (إضافة، حذف، تعديل، عرض...) تتم عبر التعامل مع ملف `Clients.txt`.
-* كل سطر في الملف يمثل سجل عميل واحد ويُخزّن بهذا الشكل:
+1. **استنسخ المشروع (Clone):**
 
-  ```
-  AccountNumber#//#PinCode#//#Name#//#Phone#//#Balance
-  ```
-
-مثال:
-
-```
-A101#//#1234#//#محمد علي#//#777777#//#1500.50
-A102#//#5678#//#أحمد سعيد#//#777778#//#3200.75
-```
-
----
-
-## ▶️ طريقة التشغيل (معدلة)
-
-المشروع **جاهز للتشغيل** — سأرسل لك جميع الملفات الضرورية. ضع جميع الملفات معًا في نفس مجلد المشروع ثم قم بتشغيلها كما يلي:
-
-1. **انسخ الملفات أو استخرج الريبو** إلى جهازك:
-
-   ```
-   git clone <repo-url>
-   cd <repo-folder>
+   ```bash
+   git clone https://github.com/abdulrhmanalbrashi/BankProject.git
+   cd BankProject
    ```
 
-   أو ببساطة انسخ الملفات التي سأرسلها إلى مجلد جديد.
+2. **تأكد من وجود الملفات التالية:**
 
-2. **تأكد من وجود الملفات التالية** في مجلد المشروع (سوف تزودني بها):
-
-   * `Solution.h`
    * `main.cpp`
+   * `Utils.h / Utils.cpp`
+   * `Client.h / Client.cpp`
+   * `Transactions.h / Transactions.cpp`
+   * `Menu.h / Menu.cpp`
    * `Clients.txt`
 
-3. **قم بالتجميع والتشغيل**. مثال باستخدام `g++` من الطرفية:
+3. **التجميع والتشغيل:**
 
+   ```bash
+   g++ -o bank_app main.cpp Utils.cpp Client.cpp Transactions.cpp Menu.cpp
+   ./bank_app
    ```
-   g++ -o client_app main.cpp
-   ./client_app
-   ```
 
-   *إذا كان `main.cpp` يستدعي `Solution.h` وكانت الملفات في نفس المجلد، فسيتم تجميع وتشغيل البرنامج بنجاح.*
-
-4. **باستخدام بيئة تطوير (اختياري)**: يمكنك فتح المجلد في Visual Studio أو Code::Blocks أو VS Code، ثم إنشاء مشروع Console جديد أو إضافة الملفات إلى مشروع موجود، ثم البناء (Build) والتشغيل (Run).
+4. **أو من خلال بيئة تطوير (IDE):**
+   افتح المجلد في Visual Studio أو Code::Blocks أو VS Code، ثم قم بالبناء (Build) والتشغيل (Run).
 
 ---
 
 ## 🧠 المفاهيم المستخدمة
 
 * التعامل مع الملفات في C++
-* استخدام **struct** و **vector**
-* بناء الدوال (Functions)
-* استخدام **Enums**
-* تنسيق المخرجات باستخدام المكتبة `iomanip`
+* البُنى (Structs) والمتجهات (Vectors)
+* الدوال والتعدادات (Enums)
+* تنسيق المخرجات
+* تصميم برمجي منظم (Modular Design)
+* واجهة كونسول تفاعلية (ألوان + رموز + أصوات)
 
 ---
 
-## 💡 أفكار للتطوير المستقبلي
+## 💡 التطوير المستقبلي (v1.2 وما بعده)
 
-* نظام دخول آمن (كلمة مرور للمدير)
-* تخزين البيانات باستخدام قاعدة بيانات أو بصيغة JSON بدلًا من ملف نصي
-* واجهة رسومية (GUI) باستخدام **Qt** أو **wxWidgets**
-* إضافة خاصية الفرز والبحث المتقدم
+* 🔐 نظام تسجيل دخول للمدير
+* 🗄️ دعم قواعد البيانات أو JSON
+* 💻 واجهة رسومية (GUI)
+* 📊 إحصاءات العملاء والفرز
 
 ---
 
@@ -231,10 +206,10 @@ A102#//#5678#//#أحمد سعيد#//#777778#//#3200.75
 
 **عبد الرحمن البراشي**
 📧 البريد الإلكتروني: [--]
-🌐 GitHub: [https://github.com/abdulrhmanalbrashi]
+🌐 GitHub: [[https://github.com/abdulrhmanalbrashi](https://github.com/abdulrhmanalbrashi)]
 
 ---
 
 ## 📄 الترخيص
 
-هذا المشروع مرخص تحت رخصة **MIT License** – يحق لك استخدامه وتعديله وتوزيعه بحرية.
+هذا المشروع مرخص تحت **رخصة MIT** — يمكنك استخدامه وتعديله وتوزيعه بحرية.

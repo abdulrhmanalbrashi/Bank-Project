@@ -1,12 +1,7 @@
-﻿#include <iostream> 
-#include "Solution.h"
-
-using namespace std;
+﻿#include "Menue.h"
 
 int main()
 {
-
-	//MainMenueScreen();
 	ShowMainMenue();
 
 	system("pause>0");
