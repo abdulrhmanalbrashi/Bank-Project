@@ -1,16 +1,16 @@
 #pragma once
 #include "Transactions.h"
 
+//Declarations Functions
+void Login();
+void ShowMainMenue();
 
 enum enMainMenueOptions
 {
     eListClients = 1, eAddNewClient = 2,
     eDeleteClient = 3, eUpdateClient = 4,
-    eFindClient = 5, eTransactions = 6, eExit = 7
+    eFindClient = 5, eTransactions = 6, eManageUsers = 7, eLogout = 8
 };
-
-// Declaration
-void ShowMainMenue();
 
 /**
  * @brief Waits for user input and returns to the main menu.
@@ -31,9 +31,9 @@ short ReadMainMenueOption()
     short Choice = 0;
     do
     {
-        cout << "Choose what do you want to do? [1 to 7]? ";
+        cout << "Choose what do you want to do? [1 to 8]? ";
         cin >> Choice;
-    } while (!IsNumber(Choice) || (Choice > 7 || Choice < 1));
+    } while (!IsNumber(Choice) || (Choice > 8 || Choice < 1));
 
     return Choice;
 }
@@ -75,8 +75,12 @@ void PerfromMainMenueOption(enMainMenueOptions MainMenueOption)
         GoBackToMainMenue();
         break;
 
-    case enMainMenueOptions::eExit:
-        ShowEndScreen();
+    case enMainMenueOptions::eManageUsers:
+        ShowManageUsersMenu();
+        break;
+
+    case enMainMenueOptions::eLogout:
+        Login();
         break;
     }
 }
@@ -86,6 +90,12 @@ void PerfromMainMenueOption(enMainMenueOptions MainMenueOption)
  */
 void ShowMainMenue()
 {
+    if (!CheckAccessPermission(enPermissions::epLoginToSystem))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Login.", MessageType::Warning);
+        system("pause>0");
+        Login();
+    }
     ShowHeader("\tMain Menue Screen");
     cout << "\t[1] Show Client List.\n";
     cout << "\t[2] Add New Client.\n";
@@ -93,7 +103,8 @@ void ShowMainMenue()
     cout << "\t[4] Update Client Info.\n";
     cout << "\t[5] Find Client.\n";
     cout << "\t[6] Transactions.\n";
-    cout << "\t[7] Exit.\n";
+    cout << "\t[7] Manage Users.\n";
+    cout << "\t[8] LogOut.\n";
     cout << "===========================================\n";
     PerfromMainMenueOption((enMainMenueOptions)ReadMainMenueOption());
 }

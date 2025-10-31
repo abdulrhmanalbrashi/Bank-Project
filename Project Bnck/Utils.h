@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <windows.h> 
 #include <regex>
+
 using namespace std;
 
 enum class MessageType {
@@ -147,4 +148,55 @@ vector<string> SplitString(string S1, string Delim)
     }
 
     return vString;
+}
+
+string TrimLeft(string Text)
+{
+	for (short i = 0; i < Text.length(); i++)
+	{
+		if (Text[i] != ' ')
+		{
+			return  Text.substr(i, Text.length() - i);
+		}
+	}
+	return "";
+
+}
+
+string TrimRight(string Text)
+{
+	for (int i = Text.length() - 1; i >= 0; i--)
+	{
+		if (Text[i] != ' ')
+		{
+			return  Text.substr(0, i + 1);
+
+		}
+	}
+	return "";
+
+}
+
+string Trim(string Text)
+{
+    return TrimLeft(TrimRight(Text));
+}
+
+string ReadText()
+{
+    string user;
+    getline(cin >> ws, user);
+    return Trim(user);
+}
+
+string EncryptPassword(const string& password) {
+    string encrypted = password;
+    for (char& c : encrypted) c += 3;
+    return encrypted;
+}
+
+string DecryptPassword(const string& encrypted) {
+    string decrypted = encrypted;
+    for (char& c : decrypted) c -= 3;
+    return decrypted;
 }

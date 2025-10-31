@@ -1,5 +1,6 @@
 #pragma once
 #include "Clients.h"
+#include "Users.h"
 
 enum enMainMenueTransactions
 {
@@ -10,6 +11,8 @@ enum enMainMenueTransactions
 // Declaration 
 void ShowTransactionScreen();
 void  GoBackToMainMenue();
+
+
 /**
  * @brief Calculates the total balance of all clients.
  */
@@ -38,30 +41,6 @@ void ListBalance(vector <sClient> vClients)
         }
 }
 
-/**
- * @brief Displays all client balances and the total balance of the bank.
- */
-void ShowTotalBalanceScreen()
-{
-    system("cls");
-    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
-    cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
-    cout << "\n_____________________________________________";
-    cout << "_______________________________\n" << endl;
-
-    cout << "| " << left << setw(15) << "Accout Number";
-    cout << "| " << left << setw(40) << "Client Name";
-    cout << "| " << left << setw(12) << "Balance";
-    cout << "\n_____________________________________________";
-    cout << "_______________________________\n" << endl;
-
-    ListBalance(vClients);
-
-    cout << "\n_____________________________________________";
-    cout << "_______________________________\n" << endl;
-    cout << "\t\t\t\tTotal Balance= " << GetTotalBalance(vClients) << endl;
-
-}
 
 /**
  * @brief Deposits and withdraw a specific amount into a client’s account by account number.
@@ -120,6 +99,30 @@ void ShowWithdrawScreen()
     } while (Confirmation("Do you went To find Account"));
 }
 
+/**
+ * @brief Displays all client balances and the total balance of the bank.
+ */
+void ShowTotalBalanceScreen()
+{
+    system("cls");
+    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
+    cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
+    cout << "\n_____________________________________________";
+    cout << "_______________________________\n" << endl;
+
+    cout << "| " << left << setw(15) << "Accout Number";
+    cout << "| " << left << setw(40) << "Client Name";
+    cout << "| " << left << setw(12) << "Balance";
+    cout << "\n_____________________________________________";
+    cout << "_______________________________\n" << endl;
+
+    ListBalance(vClients);
+
+    cout << "\n_____________________________________________";
+    cout << "_______________________________\n" << endl;
+    cout << "\t\t\t\tTotal Balance= " << GetTotalBalance(vClients) << endl;
+
+}
 /**
  * @brief Displays the deposit screen and handles deposit transactions.
  */
@@ -211,6 +214,11 @@ void PerfromMainMenueTransaction(enMainMenueTransactions MainMenueTransaction)
  */
 void ShowTransactionScreen()
 {
+    if (!CheckAccessPermission(enPermissions::epTransactios))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Transactios.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
     ShowHeader("\tTransaction Menue Screen");
     cout << "\t[1] Deposit.\n";
     cout << "\t[2] Withdraw.\n";
@@ -219,3 +227,8 @@ void ShowTransactionScreen()
     cout << "===========================================\n";
     PerfromMainMenueTransaction((enMainMenueTransactions)ReadMainMenueTransactions());
 }
+
+
+
+
+

@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+#include "Users.h"
 
 const string ClientsFileName = "Clients.txt";
 
@@ -14,13 +15,25 @@ struct sClient
     bool MarkForDelete = false;
 };
 
-//Declaration 
-void PrintClientCard(sClient Client);
-string ReadClientAccountNumber();
 
+// File 
 
-// File operations
+/**
+ * @brief Adds a single line of client data to the file.
+ */
+void AddDataLineToFile(string FileName, string  stDataLine)
+{
+    fstream MyFile;
+    MyFile.open(FileName, ios::out | ios::app);
 
+    if (MyFile.is_open())
+    {
+
+        MyFile << stDataLine << endl;
+
+        MyFile.close();
+    }
+}
 /**
  * @brief Converts a line from the file into a client record.
  */
@@ -139,22 +152,6 @@ vector <sClient> SaveCleintsDataToFile(string FileName, vector <sClient> vClient
     return vClients;
 }
 
-/**
- * @brief Adds a single line of client data to the file.
- */
-void AddDataLineToFile(string FileName, string  stDataLine)
-{
-    fstream MyFile;
-    MyFile.open(FileName, ios::out | ios::app);
-
-    if (MyFile.is_open())
-    {
-
-        MyFile << stDataLine << endl;
-
-        MyFile.close();
-    }
-}
 
 
 // Client management
@@ -168,22 +165,22 @@ sClient ReadNewClient()
     cout << "Enter Account Number? ";
 
     // Usage of std::ws will extract allthe whitespace character
-    getline(cin >> ws, Client.AccountNumber);
+    Client.AccountNumber = ReadText();
 
     while (ClientExistsByAccountNumber(Client.AccountNumber, ClientsFileName))
     {
         cout << "\nClient with [" << Client.AccountNumber << "] already exists, Enter another Account Number? ";
-        getline(cin >> ws, Client.AccountNumber);
+        Client.AccountNumber = ReadText();
     }
 
     cout << "Enter PinCode? ";
-    getline(cin, Client.PinCode);
+    Client.PinCode= ReadText();
 
     cout << "Enter Name? ";
-    getline(cin, Client.Name);
+    Client.Name = ReadText();
 
     cout << "Enter Phone? ";
-    getline(cin, Client.Phone);
+    Client.Phone = ReadText();
 
     do
     {
@@ -192,6 +189,18 @@ sClient ReadNewClient()
     } while (!IsNumber(Client.AccountBalance) || Client.AccountBalance < 1);
 
     return Client;
+}
+/**
+ * @brief Prompts the user to enter an account number.
+ */
+string ReadClientAccountNumber()
+{
+    string AccountNumber = "";
+
+    cout << "\nPlease enter AccountNumber? ";
+    AccountNumber=ReadText();
+    return AccountNumber;
+
 }
 
 /**
@@ -211,6 +220,27 @@ bool FindClientByAccountNumber(string AccountNumber, vector <sClient> vClients, 
     }
     return false;
 }
+
+/**
+ * @brief Marks a client for deletion by account number in the given vector.
+ */
+bool MarkClientForDeleteByAccountNumber(string AccountNumber, vector <sClient>& vClients)
+{
+
+    for (sClient& C : vClients)
+    {
+
+        if (C.AccountNumber == AccountNumber)
+        {
+            C.MarkForDelete = true;
+            return true;
+        }
+
+    }
+
+    return false;
+}
+
 
 /**
  * @brief Prompts the user to change a client’s data and returns the updated record.
@@ -239,24 +269,77 @@ sClient ChangeClientRecord(string AccountNumber)
     return Client;
 }
 
+// Display
+
 /**
- * @brief Marks a client for deletion by account number in the given vector.
+ * @brief Prints a single client’s data in a formatted line.
  */
-bool MarkClientForDeleteByAccountNumber(string AccountNumber, vector <sClient>& vClients)
+void PrintClientRecordLineBalance(sClient Client)
 {
+    cout << "| " << setw(15) << left << Client.AccountNumber;
+    cout << "| " << setw(40) << left << Client.Name;
+    cout << "| " << setw(12) << left << Client.AccountBalance;
+}
+// @brief Displays detailed information for a single client.
+void PrintClientCard(sClient Client)
+{
+    cout << "\nThe following are the client details:\n";
+    cout << "-----------------------------------";
+    cout << "\nAccout Number: " << Client.AccountNumber;
+    cout << "\nPin Code     : " << Client.PinCode;
+    cout << "\nName         : " << Client.Name;
+    cout << "\nPhone        : " << Client.Phone;
+    cout << "\nAccount Balance: " << Client.AccountBalance;
+    cout << "\n-----------------------------------\n";
+}
+void PrintClientRecordLine(sClient Client)
+{
+    cout << "| " << setw(15) << left << Client.AccountNumber;
+    cout << "| " << setw(10) << left << Client.PinCode;
+    cout << "| " << setw(40) << left << Client.Name;
+    cout << "| " << setw(12) << left << Client.Phone;
+    cout << "| " << setw(12) << left << Client.AccountBalance;
+}
 
-    for (sClient& C : vClients)
+
+/**
+ * @brief Displays all clients stored in the system.
+ */
+void ShowAllClientsScreen()
+{
+    if (!CheckAccessPermission(enPermissions::epShowListClients))
     {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Show Clients List.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
+    system("cls");
+    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
 
-        if (C.AccountNumber == AccountNumber)
+    cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+
+    cout << "| " << left << setw(15) << "Accout Number";
+    cout << "| " << left << setw(10) << "Pin Code";
+    cout << "| " << left << setw(40) << "Client Name";
+    cout << "| " << left << setw(12) << "Phone";
+    cout << "| " << left << setw(12) << "Balance";
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+
+    if (vClients.size() == 0)
+        cout << "\t\t\t\tNo Clients Available In the System!";
+    else
+
+        for (sClient Client : vClients)
         {
-            C.MarkForDelete = true;
-            return true;
+
+            PrintClientRecordLine(Client);
+            cout << endl;
         }
 
-    }
-
-    return false;
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
 }
 
 /**
@@ -291,6 +374,20 @@ void AddNewClients()
 
     } while (Confirmation("Do you want to add more clients"));
 
+}
+/**
+ * @brief Displays the “Add New Clients” screen.
+ */
+void ShowAddNewClientsScreen()
+{
+    if (!CheckAccessPermission(enPermissions::epAddNewClients))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Add Clients.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
+    ShowHeader("\tAdd New Clients Screen");
+
+    AddNewClients();
 }
 
 /**
@@ -327,6 +424,22 @@ bool DeleteClientByAccountNumber(string AccountNumber, vector <sClient>& vClient
         cout << "\nClient with Account Number (" << AccountNumber << ") is Not Found!";
         return false;
     }
+}
+/**
+ * @brief Displays the “Delete Client” screen and handles the deletion process.
+ */
+void ShowDeleteClientScreen()
+{
+    if (!CheckAccessPermission(enPermissions::epDeleteClients))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Delete Clients.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
+    ShowHeader("\tDelete Client Screen");
+
+    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
+    string AccountNumber = ReadClientAccountNumber();
+    DeleteClientByAccountNumber(AccountNumber, vClients);
 }
 
 /**
@@ -372,85 +485,22 @@ bool UpdateClientByAccountNumber(string AccountNumber, vector <sClient>& vClient
     }
 }
 
-
-// Display
-
 /**
- * @brief Prints a single client’s data in a formatted line.
+ * @brief Displays the “Update Client Info” screen and handles updates.
  */
-void PrintClientRecordLineBalance(sClient Client)
+void ShowUpdateClientScreen()
 {
-    cout << "| " << setw(15) << left << Client.AccountNumber;
-    cout << "| " << setw(40) << left << Client.Name;
-    cout << "| " << setw(12) << left << Client.AccountBalance;
-}
-void PrintClientRecordLine(sClient Client)
-{
-    cout << "| " << setw(15) << left << Client.AccountNumber;
-    cout << "| " << setw(10) << left << Client.PinCode;
-    cout << "| " << setw(40) << left << Client.Name;
-    cout << "| " << setw(12) << left << Client.Phone;
-    cout << "| " << setw(12) << left << Client.AccountBalance;
-}
+    if (!CheckAccessPermission(enPermissions::epUpdateClients))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Update Clients.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
+    ShowHeader("\tUpdate Client Info Screen");
 
-/**
- * @brief Displays all clients stored in the system.
- */
-void ShowAllClientsScreen()
-{
-    system("cls");
     vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
+    string AccountNumber = ReadClientAccountNumber();
+    UpdateClientByAccountNumber(AccountNumber, vClients);
 
-    cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
-    cout << "\n_______________________________________________________";
-    cout << "_________________________________________\n" << endl;
-
-    cout << "| " << left << setw(15) << "Accout Number";
-    cout << "| " << left << setw(10) << "Pin Code";
-    cout << "| " << left << setw(40) << "Client Name";
-    cout << "| " << left << setw(12) << "Phone";
-    cout << "| " << left << setw(12) << "Balance";
-    cout << "\n_______________________________________________________";
-    cout << "_________________________________________\n" << endl;
-
-    if (vClients.size() == 0)
-        cout << "\t\t\t\tNo Clients Available In the System!";
-    else
-
-        for (sClient Client : vClients)
-        {
-
-            PrintClientRecordLine(Client);
-            cout << endl;
-        }
-
-    cout << "\n_______________________________________________________";
-    cout << "_________________________________________\n" << endl;
-}
-
-/**
- * @brief Displays detailed information for a single client.
- */
-void PrintClientCard(sClient Client)
-{
-    cout << "\nThe following are the client details:\n";
-    cout << "-----------------------------------";
-    cout << "\nAccout Number: " << Client.AccountNumber;
-    cout << "\nPin Code     : " << Client.PinCode;
-    cout << "\nName         : " << Client.Name;
-    cout << "\nPhone        : " << Client.Phone;
-    cout << "\nAccount Balance: " << Client.AccountBalance;
-    cout << "\n-----------------------------------\n";
-}
-
-/**
- * @brief Displays the “Add New Clients” screen.
- */
-void ShowAddNewClientsScreen()
-{
-    ShowHeader("\tAdd New Clients Screen");
-
-    AddNewClients();
 }
 
 /**
@@ -458,6 +508,11 @@ void ShowAddNewClientsScreen()
  */
 void ShowFindClientScreen()
 {
+    if (!CheckAccessPermission(enPermissions::epFindClients))
+    {
+        ShowMessage("Access Denied.\nYou do'nt have permission to Find Clients.", MessageType::Warning);
+        GoBackToMainMenue();
+    }
     ShowHeader("\tFind Client Screen");
 
     vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
@@ -482,43 +537,3 @@ void ShowEndScreen()
 {
     ShowHeader("\tProgram Ends :-)");
 }
-
-/**
- * @brief Displays the “Delete Client” screen and handles the deletion process.
- */
-void ShowDeleteClientScreen()
-{
-    ShowHeader("\tDelete Client Screen");
-
-    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
-    string AccountNumber = ReadClientAccountNumber();
-    DeleteClientByAccountNumber(AccountNumber, vClients);
-}
-
-/**
- * @brief Displays the “Update Client Info” screen and handles updates.
- */
-void ShowUpdateClientScreen()
-{
-    ShowHeader("\tUpdate Client Info Screen");
-
-    vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
-    string AccountNumber = ReadClientAccountNumber();
-    UpdateClientByAccountNumber(AccountNumber, vClients);
-
-}
-
-/**
- * @brief Prompts the user to enter an account number.
- */
-string ReadClientAccountNumber()
-{
-    string AccountNumber = "";
-
-    cout << "\nPlease enter AccountNumber? ";
-    cin >> AccountNumber;
-    return AccountNumber;
-
-}
-
-

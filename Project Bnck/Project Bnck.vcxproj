@@ -146,6 +146,8 @@
     <ClInclude Include="Problems.h" />
     <ClInclude Include="Menue.h" />
     <ClInclude Include="Transactions.h" />
+    <ClInclude Include="Login.h" />
+    <ClInclude Include="Users.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
