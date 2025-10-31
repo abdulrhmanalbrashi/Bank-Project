@@ -230,7 +230,8 @@ g++ -o bank_app main.cpp
 ترخيص: MIT
 
 
-
+ملاحظة : Username: Admin
+               password :turki
 
 
 ---
